@@ -3,43 +3,30 @@ def classify(age):
         return "Senior"
     else:
         return "not a Senior"
-# ---------------- MAIN PROGRAM ----------------
+
 data = input("Enter Name:Age years (entries separated by ';'): ")
+parts = data.split(";") # Ayesha: 30 years;John:45 years;Mary:67 years;Alice:30 years;Robert:62 years
+people = {}
 
-# Split entries by ; 
-entries = data.split(";")
-
-people = {}   # dictionary name → age
-
-for item in entries:
-    item = item.strip()         # remove spaces
+for item in parts:
+    item = item.strip()
     if item == "":
         continue
-
-    # Example item:  "Ayesha: 30 years"
     name, age_text = item.split(":")
     name = name.strip()
-
-    # remove "years" and spaces
     age_text = age_text.replace("years", "").strip()
-
     age = int(age_text)
-
     people[name] = age
 
-# ---- Classification ----
 for name in people:
-    result = classify(people[name])
-    print(f"{name} is {result}.")
+    print(name, "is", classify(people[name]) + ".")
 
 print()
-# ---- Eldest and Youngest ----
-# find max age
+
 eldest_name = ""
 eldest_age = -1
-
 youngest_name = ""
-youngest_age = 1000
+youngest_age = 9999
 
 for name in people:
     age = people[name]
@@ -50,5 +37,5 @@ for name in people:
         youngest_age = age
         youngest_name = name
 
-print(f"The eldest person is {eldest_name}, aged {eldest_age} years.")
-print(f"The youngest person is {youngest_name}, aged {youngest_age} years.")
+print("The eldest person is", eldest_name + ", aged", str(eldest_age) + " years.")
+print("The youngest person is", youngest_name + ", aged", str(youngest_age) + " years.")
