@@ -1,50 +1,44 @@
-import re
+paragraph = input("Input: ")
 
-def analyze_paragraph(text: str):
-    # Find words composed of letters only
-    words = re.findall(r"[A-Za-z]+", text)
-    if not words:
-        return None
+# Remove punctuation that may stick to words
+clean = ""
+for ch in paragraph:
+    if ch.isalpha() or ch.isspace():
+        clean += ch.lower()
+    else:
+        clean += " "
 
-    words_lower = [w.lower() for w in words]
-    total = len(words_lower)
+# Split into words
+words = clean.split()
 
+# Case: empty or no words
+if len(words) == 0:
+    print("No words found in the input")
+else:
+    # 1. Total words
+    total = len(words)
+    print("Total words:", total)
+
+    # 2 & 3. Most frequent word and its frequency
     freq = {}
-    order = []  # track first occurrence order
-    for w in words_lower:
-        if w not in freq:
-            freq[w] = 0
-            order.append(w)
-        freq[w] += 1
+    for w in words:
+        if w in freq:
+            freq[w] += 1
+        else:
+            freq[w] = 1
 
-    maxfreq = max(freq.values())
-    # pick the first word (by first occurrence) that has max frequency
-    most = next(w for w in order if freq[w] == maxfreq)
-    unique = len(freq)
+    # find max frequency
+    max_count = 0
+    most_word = ""
 
-    return {
-        'total': total,
-        'most': most,
-        'frequency': maxfreq,
-        'unique': unique,
-    }
+    for w in freq:
+        if freq[w] > max_count:
+            max_count = freq[w]
+            most_word = w
 
-def main():
-    s = input('Input: ').strip()
-    if not s:
-        print('No words found in the input')
-        return
+    print("Most frequent word:", '"' + most_word + '"')
+    print("Frequency:", max_count)
 
-    result = analyze_paragraph(s)
-    if result is None:
-        print('No words found in the input')
-        return
-
-    print(f'Total words: {result["total"]}')
-    # Print most frequent word in quotes to match sample format
-    print(f'Most frequent word: "{result["most"]}"')
-    print(f'Frequency: {result["frequency"]}')
-    print(f'Unique words: {result["unique"]}')
-
-if __name__ == '__main__':
-    main()
+    # 4. Unique word count (case-insensitive)
+    unique_count = len(freq)
+    print("Unique words:", unique_count)
